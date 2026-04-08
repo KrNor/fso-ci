@@ -9,7 +9,7 @@
     "test": "jest",
     "tests": "playwright test --project=chromium --project=firefox",
     "test:e2e": "playwright test --project=chromium --project=firefox",
-    "tests:report": "playwright show-report",
+    "test:report": "playwright show-report",
     "eslint": "eslint './**/*.{js,jsx}'",
     "build": "webpack --mode production"
   },
