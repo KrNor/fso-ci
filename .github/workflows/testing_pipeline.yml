@@ -22,3 +22,15 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: joining commits to one string
+        env:
+          COMMIT_COMBINED_STRING: ${{ join(toJson(github.event.commits.*.message), ', ')  }}
+        run: echo "$COMMIT_COMBINED_STRING"
+      - name: checking if the joined commits have skip, reusing variable
+        env:
+          COMMIT_CONTAINS_SKIP_REUSE_VAR: ${{ contains($COMMIT_COMBINED_STRING, "#skip")}}
+        run: echo "$COMMIT_CONTAINS_SKIP_REUSE_VAR"
+      - name: checking if the joined commits have skip, not reusing variable
+        env:
+          COMMIT_CONTAINS_SKIP: ${{ contains(join(toJson(github.event.commits.*.message), ', '), "#skip")  }}
+        run: echo "$COMMIT_CONTAINS_SKIP"
