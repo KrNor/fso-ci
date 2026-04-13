@@ -12,7 +12,7 @@ const start = async () => {
 }
 
 app.get('/version', (req, res) => {
-  res.send('1.0.4') // changed just so there is something changed
+  res.send('1.0.4') // changed just so there is something changed again
 })
 
 app.get('/health', (req, res) => {
