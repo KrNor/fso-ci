@@ -45,7 +45,7 @@ jobs:
   success_notify:
     needs: [combined_deployment_pipeline, tag_release]
     runs-on: ubuntu-latest
-    if: success()
+    if: ${{ github.event_name == 'push' &&  success()}}
     steps:
       - uses: sarisia/actions-status-discord@v1
         with:
