@@ -45,14 +45,16 @@ jobs:
   success_notify:
     needs: [combined_deployment_pipeline, tag_release]
     runs-on: ubuntu-latest
-    if: success()
+    if: ${{ github.event_name == 'push' &&  success()}}
     steps:
       - uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
           title: "Deployment Details"
           url: ${{ github.event.head_commit.url }}
           content: "Build succeeded! A new version has been deployed."
+          color: 0x83d500
           description: |
             Commit: `${{ github.sha }}`
             Message: `${{ github.event.head_commit.message }}`
@@ -65,10 +67,11 @@ jobs:
       - uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
           content: "Build failed! The pipeline encountered an error."
           title: "Failure Details"
           url: ${{ github.event.head_commit.url }}
-          env:
+          color: 0xf70000
           description: |
             Repository: `${{ github.repository }}`
             Branch: `${{ github.ref }}`
