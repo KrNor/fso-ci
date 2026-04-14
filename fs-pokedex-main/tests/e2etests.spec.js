@@ -22,7 +22,7 @@ describe("Pokedex", () => {
       ).toBeVisible();
     });
     test("can open a particular pokemons page", async ({ page }) => {
-      const locator = page.getByRole("link", { name: "weedle" });
+      const locator = page.getByRole("link", { name: "woodle" }); // changing so the test would fail
       await locator.click();
       await expect(page.getByText("run away")).toBeVisible();
     });
