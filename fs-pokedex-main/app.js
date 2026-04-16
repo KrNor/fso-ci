@@ -20,7 +20,8 @@ app.get('/health', (req, res) => {
 })
 
 app.get('/hp', (req, res) => {
-  res.send('good')
+  // res.send('good')
+  res.status(400).send('bad')
 })
 
 
