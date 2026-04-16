@@ -12,4 +12,4 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v5
         with:
-          url: https://fso-ci.onrender.com/health
+          url: https://fso-ci.onrender.com/hp
