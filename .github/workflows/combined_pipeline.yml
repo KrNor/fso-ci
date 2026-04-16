@@ -38,7 +38,7 @@ jobs:
   tag_release:
     needs: [deployment]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' &&  success()}}
+    if: success()
     steps:
       - uses: actions/checkout@v6
       - name: Bump version and push tag
@@ -50,7 +50,7 @@ jobs:
   success_notify:
     needs: [ deployment]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' &&  success()}}
+    if: success()
     steps:
       - uses: sarisia/actions-status-discord@v1
         with:
