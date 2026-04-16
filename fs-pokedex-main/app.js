@@ -19,4 +19,9 @@ app.get('/health', (req, res) => {
   res.send('good')
 })
 
+app.get('/hp', (req, res) => {
+  res.send('good')
+})
+
+
 start()
