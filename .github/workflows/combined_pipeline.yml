@@ -70,7 +70,7 @@ jobs:
           nodetail: true
           content: "Build failed! The pipeline encountered an error."
           title: "Failure Details"
-          url: ${{ github.event.head_commit.url }}
+          url: ${{ github.event_name == 'push' && github.event.head_commit.url || github.repository_url }}
           color: 0xf70000
           description: |
             Repository: `${{ github.repository }}`
