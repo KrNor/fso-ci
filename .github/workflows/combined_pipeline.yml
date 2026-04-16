@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  combined_deployment_pipeline:
+  build_and_test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,11 +28,15 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npm run test:e2e
+  deployment:
+    needs: [build_and_test]
+    runs-on: ubuntu-latest
+    steps:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip') }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
   tag_release:
-    needs: [combined_deployment_pipeline]
+    needs: [deployment]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -43,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
   success_notify:
-    needs: [combined_deployment_pipeline, tag_release]
+    needs: [ deployment]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' &&  success()}}
     steps:
@@ -60,7 +64,7 @@ jobs:
             Message: `${{ github.event.head_commit.message }}`
             Author: `${{ github.event.head_commit.author.username }}`
   failure_notify:
-    needs: [combined_deployment_pipeline]
+    needs: [tag_release, deployment]
     runs-on: ubuntu-latest
     if: failure()
     steps:
@@ -82,3 +86,4 @@ jobs:
             Job: `${{ github.job }}`
             
             [Workflow Run](https://github.com/KrNor/fso-ci/actions/runs/${{ github.run_id }})
+
