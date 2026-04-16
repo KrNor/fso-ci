@@ -50,7 +50,7 @@ jobs:
   success_notify:
     needs: [ deployment]
     runs-on: ubuntu-latest
-    if: success()
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip') }}
     steps:
       - uses: sarisia/actions-status-discord@v1
         with:
