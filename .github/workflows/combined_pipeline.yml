@@ -38,6 +38,7 @@ jobs:
   tag_release:
     needs: [deployment]
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' &&  success()}}
     steps:
       - uses: actions/checkout@v6
       - name: Bump version and push tag
@@ -64,7 +65,7 @@ jobs:
             Message: `${{ github.event.head_commit.message }}`
             Author: `${{ github.event.head_commit.author.username }}`
   failure_notify:
-    needs: [tag_release, deployment]
+    needs: [ deployment]
     runs-on: ubuntu-latest
     if: failure()
     steps:
